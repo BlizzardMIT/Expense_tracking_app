@@ -6,10 +6,10 @@ def main():
     expense_file_path = "expenses.csv"
     
     # Get user input for expense.
-    expense = get_user_expense()
+    # expense = get_user_expense()
    
     # Write their expense to a file.
-    save_expense_to_file(expense, expense_file_path)
+    # save_expense_to_file(expense, expense_file_path)
 
     # Read file and summarize expenses.
     summarize_expenses(expense_file_path)
@@ -43,13 +43,7 @@ def get_user_expense():
             return new_expense
         else:
             print("Invalid category. Please try again!")
-
-
-
-
-
         break
-
 
 def save_expense_to_file(expense: Expense, expense_file_path):
     print(f"📑 Saving User Expense: {expense} to {expense_file_path}")
@@ -59,6 +53,20 @@ def save_expense_to_file(expense: Expense, expense_file_path):
 
 def summarize_expenses(expense_file_path):
     print(f"📑 Summarizing User Expense")
+    expenses = []
+    with open(expense_file_path, "r") as f:
+        lines = f.readlines()
+        for line in lines:
+            expense_name, expense_amount, expense_category = line.strip().split(",")
+            line_expense = Expense(
+                name=expense_name, 
+                amount=float(expense_amount),
+                category=expense_category,
+           )
+            print(line_expense)
+            expenses.append(line_expense)
+    print(expenses)
+           
 
 
 if __name__ == "__main__":
