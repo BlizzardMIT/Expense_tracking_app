@@ -84,6 +84,14 @@ def summarize_expenses(expense_file_path, budget):
     remaining_budget = budget - total_spent
     print(f" Budget Remaining: ${total_spent: .2f} ")
 
+    # Get the current date
+now = datetime.datetime.now()
+
+days_in_month = calendar.monthrange(now.year,  now.month)[1]
+
+remaining_days = days_in_month - now.day
+
+
 
 def new_func(expense):
     return expense.category
