@@ -1,18 +1,19 @@
-from typing import List
 from expense import Expense
-budget = 2000
+import calendar
+import datetime
 
 
 def main():
     print(f"🔖 Running Expense Tracker!")
     expense_file_path = "expenses.csv"
-    
+    budget = 2000
+
     # Get user input for expense.
-    # expense = get_user_expense()
+    expense = get_user_expense()
    
     # Write their expense to a file.
-    # save_expense_to_file(expense, expense_file_path)
-
+    save_expense_to_file(expense, expense_file_path)
+    
     # Read file and summarize expenses.
     summarize_expenses(expense_file_path, budget)
 
@@ -37,7 +38,7 @@ def get_user_expense():
         value_range = f"[1 - {len(expense_categories)}]"
         selected_index = int(input("Enter a category number {value_range}: ")) - 1
       
-        if i in range(len(expense_categories)):
+        if selected_index in range(len(expense_categories)):
             selected_category = expense_categories[selected_index]
             new_expense = Expense(
                 name=expense_name, category=selected_category, amount=expense_amount
@@ -45,7 +46,7 @@ def get_user_expense():
             return new_expense
         else:
             print("Invalid category. Please try again!")
-        break
+       
 
 def save_expense_to_file(expense: Expense, expense_file_path):
     print(f"📑 Saving User Expense: {expense} to {expense_file_path}")
@@ -74,30 +75,30 @@ def summarize_expenses(expense_file_path, budget):
             amount_by_category[key] += expense.amount
         else:
             amount_by_category[key] = expense.amount
+
     print("Expenses By Category 📈 :")
     for key, amount in amount_by_category.items():
         print(f" {key}: ${amount: .2f}")
 
     total_spent = sum([x.amount for x in expenses])
-    print(f" Total spent ${total_spent: .2f} ")
+    print(f"💸 Total Spent: ${total_spent: .2f} ")
 
     remaining_budget = budget - total_spent
-    print(f" Budget Remaining: ${total_spent: .2f} ")
+    print(f"☑ Budget Remaining: ${remaining_budget: .2f} ")
 
     # Get the current date
-now = datetime.datetime.now()
+    now = datetime.datetime.now()  
+    # Get the number of days in the current month
+    days_in_month = calendar.monthrange(now.year,  now.month)[1]   
+    # Calculate the remaining number of days in the current month
+    remaining_days = days_in_month - now.day
+  
+    daily_budget = remaining_budget / remaining_days
+    print(green(f"💰 Budget Per Day: ${daily_budget: .2f}"))
+    
 
-days_in_month = calendar.monthrange(now.year,  now.month)[1]
-
-remaining_days = days_in_month - now.day
-
-
-
-def new_func(expense):
-    return expense.category
-
-
+def green(text):
+    return f"\033[92m{text}\033[0m"
 
 if __name__ == "__main__":
     main()
-
